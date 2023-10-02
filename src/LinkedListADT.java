@@ -1,48 +1,67 @@
-
 public class LinkedListADT{
      private Nodes<Contact> head;
      private Nodes<Contact>tail;
-     private Queue_Linked_List<Event>generalList;
+     private Nodes<Contact>current;
+     public Queue_Linked_List_events generalList;
     private int size;
 
     public LinkedListADT()
     {
         head=null;
         tail=null;
+        current=null;
         size=0;
-        generalList=new Queue_Linked_List<Event>();
+        generalList=new Queue_Linked_List_events();
     }
+    //adding contact and handling any duplication
     public boolean addContact( Contact c)
     {
+        Nodes<Contact>tmp=new Nodes<Contact>(c);
         if (head==null)
         {
-            head=new Nodes<>(c);
+            head=tmp;
             tail=head;
             size++;
+            current=head;
             return true;
         }
         else
         {
-            if (search(c)==null)
+            if (search(c.getPhoneNum())==null)
             {
-            tail.next=new Nodes<>(c);
+            tail.next=tmp;
+            tmp.pre=tail;
             tail=tail.next;
+
                 size++;
                 return true;
             }
             return false;
         }
     }
+        public void findFirst()
+        {
+            current=head;
 
-        //general search
-        public Contact search(Contact c)
+        }
+        public void findnext()
+            {
+                current=current.next;
+            }
+            public Contact retrive()
+            {
+                return current.data;
+            }
+
+        //general search by phone number
+        public Contact search(int c)
         {
             if (head!=null)
             {
                 Nodes <Contact>tmp = head;
                 while (tmp != null)
                 {
-                    if (tmp.data.getPhoneNum() == c.getPhoneNum())
+                    if (tmp.data.getPhoneNum() == c)
                         break;
                     tmp=tmp.next;
                 }
@@ -53,6 +72,14 @@ public class LinkedListADT{
 
     public int getSize() {
         return size;
+    }
+    public boolean empty()
+    {
+        return head==null;
+    }
+    public int getEventsSize()
+    {
+        return generalList.length();
     }
 
     //search using , email, address, birthday returning a list of answers
@@ -77,21 +104,36 @@ public class LinkedListADT{
             {
                 deleteEventWithContact(head.data);
                 head=head.next;
-            }
-            else
+                size--;
+                if (head!=null)
+                {
+                    head.pre=null;
+                }
+            } else if (tail.data.getPhoneNum()==c.getPhoneNum())
+            {
+                tail=tail.pre;
+                tail.next.pre=null;
+                tail.next=null;
+                size--;
+
+            } else
             {
                 Nodes <Contact>tmp = head;
-                Nodes <Contact> preTarget=null;
+
                 while (tmp != null)
                 {
-                    preTarget=tmp;
                     if (tmp.data.getPhoneNum()==(c.getPhoneNum()))
                         break;
 
                     tmp=tmp.next;
                 }
                 deleteEventWithContact(tmp.data);
-                preTarget.next=tmp.next;
+                tmp.pre.next=tmp.next;
+                if (tmp.next!=null)
+                {
+                    tmp.next.pre=tmp.pre;
+                }
+                size--;
             }
         }
     }
@@ -117,7 +159,7 @@ public class LinkedListADT{
             Event tmp=generalList.serve();
             if (tmp==null)
                 break;
-            generalList.enqueue(tmp);
+            generalList.enqueAlalphabetically(tmp);
             if (tmp.getDate().equalsIgnoreCase(e.getDate()))
             {
                 return false;
@@ -142,5 +184,27 @@ public class LinkedListADT{
         }
         return false;
     }
+    public void displayAlphabeticallyEvent()
+    {
+        for (int i = 0; i < generalList.length() ; i++)
+        {
+           Event e= generalList.serve();
+           generalList.enqueue(e);
+           System.out.println(e.getTitle());
+        }
+    }
+    public Queue_Linked_List_events copyEvents()
+    {
+        Queue_Linked_List_events q=new Queue_Linked_List_events();
+        for (int i = 0; i < generalList.length(); i++)
+        {
+            Event e=generalList.serve();
+            generalList.enqueue(e);
+            q.enqueue(e);
+        }
+        return q;
+    }
+
+
 }
 
