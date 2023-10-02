@@ -1,18 +1,23 @@
 
 public class LinkedListADT{
-     private Nodes<Contact> head=null;
+     private Nodes<Contact> head;
+     private Nodes<Contact>tail;
+     private Queue_Linked_List<Event>generalList;
     private int size;
 
     public LinkedListADT()
     {
         head=null;
+        tail=null;
         size=0;
+        generalList=new Queue_Linked_List<Event>();
     }
     public boolean addContact( Contact c)
     {
         if (head==null)
         {
-            head=new Nodes(c);
+            head=new Nodes<>(c);
+            tail=head;
             size++;
             return true;
         }
@@ -20,10 +25,8 @@ public class LinkedListADT{
         {
             if (search(c)==null)
             {
-            Nodes tmp=head;
-            while (tmp.next!=null)
-                tmp=tmp.next;
-            tmp.next=new Nodes(c);
+            tail.next=new Nodes<>(c);
+            tail=tail.next;
                 size++;
                 return true;
             }
@@ -72,6 +75,7 @@ public class LinkedListADT{
         {
             if (head.data.getPhoneNum()==c.getPhoneNum())
             {
+                deleteEventWithContact(head.data);
                 head=head.next;
             }
             else
@@ -86,25 +90,57 @@ public class LinkedListADT{
 
                     tmp=tmp.next;
                 }
+                deleteEventWithContact(tmp.data);
                 preTarget.next=tmp.next;
             }
         }
     }
-    public Contact searchEvent(String contac_or_title)
+    public Event searchEvent(String contac_or_title)
     {
-       Nodes<Contact> tmp=head;
-       while (tmp!=null)
-       {
-           if (tmp.data.getName().equalsIgnoreCase(contac_or_title))
-               return tmp.data;
-           else if (tmp.data.searchInEvents(contac_or_title)!=null)
-           {
-               return tmp.data;
-           }
-           tmp=tmp.next;
-       }
-       return null;
+      int size=generalList.length();
+        for (int i = 0; i <size ; i++)
+        {
+            Event tmp= generalList.serve();
+            generalList.enqueue(tmp);
+            if (tmp.getTitle().equalsIgnoreCase(contac_or_title)||tmp.getContactInvolved().getName().equalsIgnoreCase(contac_or_title))
+            {
+                return tmp;
+            }
+        }
+        return null;
     }
-
+    public boolean addEvent( Event e)
+    {
+        int size=generalList.length();
+        for (int i=0 ; i<size;i++)
+        {
+            Event tmp=generalList.serve();
+            if (tmp==null)
+                break;
+            generalList.enqueue(tmp);
+            if (tmp.getDate().equalsIgnoreCase(e.getDate()))
+            {
+                return false;
+            }
+        }
+        generalList.enqueue(e);
+        return true;
+    }
+    public boolean deleteEventWithContact(Contact c)
+    {
+        int size =generalList.length();
+        for (int i = 0; i <size ; i++)
+        {
+            Event tmp=generalList.serve();
+            if (tmp==null)
+                return false;
+            else if (tmp.getContactInvolved().getPhoneNum()==c.getPhoneNum())
+            {
+                return true;
+            }
+            generalList.enqueue(tmp);
+        }
+        return false;
+    }
 }
 

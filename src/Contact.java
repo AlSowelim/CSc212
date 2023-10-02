@@ -1,7 +1,7 @@
 public class Contact implements Comparable<Contact> {
     private String name ,  email , address, bday ,notes;
     private int phoneNum;
-    public Queue_Linked_List<Event> events;
+    //public Queue_Linked_List<Event> eventsForContact;
 
 
     public String getName() {
@@ -37,28 +37,40 @@ public class Contact implements Comparable<Contact> {
         this.bday = bday;
         this.notes = notes;
         this.phoneNum = phoneNum;
-        this.events=new Queue_Linked_List<Event>();
+        //this.eventsForContact =new Queue_Linked_List<Event>();
     }
 
     @Override
     public int compareTo(Contact o) {
        return this.name.compareTo(o.name);
     }
-    public void addEvent(Event e)
+    /*public void addEventForContact(Event e)
     {
-
-        events.enqueue(e);
-    }
+        eventsForContact.enqueue(e);
+    }*/
+    /*
     public Event searchInEvents(String  c)
     {
-        int size=events.length();
+        int size= eventsForContact.length();
         for (int i = 0; i < size; i++)
         {
-            Event e=events.serve();
-            events.enqueue(e);
+            Event e= eventsForContact.serve();
+            eventsForContact.enqueue(e);
             if (e.getTitle().equalsIgnoreCase(c))
                 return e;
         }
+
         return null;
     }
+    public void deleteEventForContact(Event e)
+    {
+        int size= eventsForContact.length();
+        for (int i = 0; i < size; i++) {
+            Event tmp= eventsForContact.serve();
+            if (tmp.getTitle().equalsIgnoreCase(e.getTitle()))
+                break;
+            eventsForContact.enqueue(tmp);
+        }
+    }
+    */
 }
