@@ -1,41 +1,9 @@
-public class Queue_Linked_List_events {
-    private Nodes<Event> head;
-    private Nodes<Event> tail;
+public class Queue_Linked_List_events extends Queue_Linkedlist<Event> {
 
-    private int size;
 
     public Queue_Linked_List_events() {
-        head=null;
-        tail=null;
-        size=0;
+        super();
     }
-
-
-    public Event serve() {
-        Nodes<Event>tmp=head;
-        head=head.next;
-        size--;
-        if (size==0)
-            tail=null;
-        return tmp.data;
-    }
-
-    public void enqueue(Event e)
-    {
-        if (tail==null)
-        {
-            head=new Nodes<Event>(e);
-            tail=head;
-        }
-        else
-        {
-            tail.next=new Nodes<Event>(e);
-            tail=tail.next;
-        }
-        size++;
-
-    }
-
 
         public void enqueAlalphabetically(Event s)
         {
@@ -55,13 +23,5 @@ public class Queue_Linked_List_events {
             }
         }
 
-    public int length() {
-        return size;
-    }
-
-
-    public boolean full() {
-        return false;
-    }
 
 }

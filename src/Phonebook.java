@@ -29,8 +29,8 @@ public class Phonebook {
     }
     public void displaySharedfNames()
     {
-        Queue_Linkedlist_contacts shared=new Queue_Linkedlist_contacts();
-        Queue_Linkedlist_contacts q=new Queue_Linkedlist_contacts();
+        Queue_Linkedlist<Contact> shared=new Queue_Linkedlist<Contact>();
+        Queue_Linkedlist<Contact> q=new Queue_Linkedlist<Contact>();
         contactlist.findFirst();
         //copy contacts to a queue
         for (int i = 0; i < contactlist.getSize(); i++)
@@ -38,10 +38,10 @@ public class Phonebook {
             q.enqueue(contactlist.retrive());
             contactlist.findnext();
         }
-        for (int j = 0; j <q.getSize() ; j++)
+        for (int j = 0; j <q.length() ; j++)
         {
             Contact c= q.serve();
-            for (int k = 0; k < q.getSize(); k++)
+            for (int k = 0; k < q.length(); k++)
             {
                 Contact c2=q.serve();
                         q.enqueue(c2);
@@ -53,7 +53,7 @@ public class Phonebook {
             }
         }
         //now display
-        for (int m = 0; m < shared.getSize() ; m++)
+        for (int m = 0; m < shared.length() ; m++)
         {
             Contact e=shared.serve();
             System.out.println(" Contacts have mutual  name");
