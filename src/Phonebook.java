@@ -1,9 +1,13 @@
 public class Phonebook {
 
-    LinkedListADT contactlist=new LinkedListADT();
-
+    LinkedListADT contactlist;
+    public Phonebook()
+    {
+        this.contactlist=new LinkedListADT();
+    }
     public void displayContactShareEvent()
     {
+        //copying events into events queue-list to not cause any problems with the order of the original list
         Queue_Linked_List_events shared=new Queue_Linked_List_events();
         Queue_Linked_List_events events=contactlist.copyEvents();
         for (int i = 0; i <events.length() ; i++)
@@ -63,9 +67,5 @@ public class Phonebook {
 
 
     }
-    public static void main(String[] args) {
 
-        System.out.println("Hello world!");
-
-    }
 }

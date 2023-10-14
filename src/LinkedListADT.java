@@ -13,7 +13,7 @@ public class LinkedListADT{
         size=0;
         generalList=new Queue_Linked_List_events();
     }
-    //adding contact and handling any duplication
+    //adding contact and handling any duplication using search method
     public boolean addContact( Contact c)
     {
         Nodes<Contact>tmp=new Nodes<Contact>(c);
@@ -69,6 +69,21 @@ public class LinkedListADT{
             }
             return null;
         }
+    public Contact searchName(String c)
+    {
+        if (head!=null)
+        {
+            Nodes <Contact>tmp = head;
+            while (tmp != null)
+            {
+                if (tmp.data.getName().equalsIgnoreCase(c))
+                    break;
+                tmp=tmp.next;
+            }
+            return tmp.data;
+        }
+        return null;
+    }
 
     public int getSize() {
         return size;
@@ -95,7 +110,7 @@ public class LinkedListADT{
         }
         return ans;
     }
-
+    //deleting contact with associated events
     public void deleteContact(Contact c)
     {
         if (head!=null)
@@ -151,8 +166,11 @@ public class LinkedListADT{
         }
         return null;
     }
+    //adding event and checking the contact associated is in the phonebook & conflict in date&Time before adding event
     public boolean addEvent( Event e)
     {
+        if ( search(e.getContactInvolved().getPhoneNum())!=null)
+        {
         int size=generalList.length();
         for (int i=0 ; i<size;i++)
         {
@@ -160,13 +178,15 @@ public class LinkedListADT{
             if (tmp==null)
                 break;
             generalList.enqueAlalphabetically(tmp);
-            if (tmp.getDate().equalsIgnoreCase(e.getDate()))
+            if (tmp.getDate().equalsIgnoreCase(e.getDate())&&((e.get_StartTime()<tmp.getEnd_Time()&&e.get_StartTime()>tmp.get_StartTime())||(e.getEnd_Time()<tmp.getEnd_Time()&&e.getEnd_Time()>tmp.get_StartTime() )))
             {
                 return false;
             }
         }
         generalList.enqueue(e);
         return true;
+        }
+        return false;
     }
     public boolean deleteEventWithContact(Contact c)
     {
@@ -203,6 +223,16 @@ public class LinkedListADT{
             q.enqueue(e);
         }
         return q;
+    }
+
+    public void display()
+    {
+        Nodes<Contact>tmp=head;
+        while (tmp!=null)
+        {
+            System.out.println(tmp.data.toString());
+            tmp=tmp.next;
+        }
     }
 
 
